@@ -1,0 +1,6 @@
+**DAX Code Used**
+
+% Weekend Transactions = DIVIDE([Weekend Transactions],[Total Transaction])
+
+60-Day Revenue = CALCULATE([Total Revenue], DATESINPERIOD('Calendar'[date],MAX('Calendar'[date]),-60,DAY))
+
