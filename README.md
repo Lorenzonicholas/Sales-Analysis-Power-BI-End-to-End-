@@ -31,4 +31,4 @@
 - License: MIT (see `LICENSE`).
 
 ## Contact
-- LinkedIn: <your profile> • Email: <your email>
+- LinkedIn: <your profile> • Email: <Lorenzo.nickolas@gmail.com>
