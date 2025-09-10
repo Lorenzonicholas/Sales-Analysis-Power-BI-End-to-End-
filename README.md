@@ -34,3 +34,7 @@
 - LinkedIn:
 [LinkedIn — Lorenzo Nicholas](https://www.linkedin.com/in/lorenzo-nicholas-716669220/)
 • Email: <Lorenzo.nickolas@gmail.com>
+
+## 📖 Case Study / Blog Post
+Full write-up with screenshots & lessons learned:
+**https://datascienceexplanations.hashnode.dev/sales-analysis-power-bi-end-to-end-project**
