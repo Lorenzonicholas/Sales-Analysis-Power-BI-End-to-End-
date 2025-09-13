@@ -11,3 +11,5 @@ slug: tableau-sorting-grouping-filtering
 ### Quick ways to sort in ascending and descending order
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757773257993/c4762bea-1777-4d21-9410-9654f90fb9cc.png align="center")
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757773579122/dfbbdc49-3d20-46eb-b3c1-fe5c19ca1da0.png align="center")
