@@ -88,3 +88,7 @@ slug: tableau-sorting-grouping-filtering
 ### Filter with SET
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757820470946/6a49a023-6417-4dc2-bc22-b81a7bc5d08a.png align="center")
+
+**Filtering what should be in the SET and out of the SET\\**
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757821083786/4da0d324-fdd8-4b93-961d-6556a7b33bcc.png align="center")
