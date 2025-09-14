@@ -362,3 +362,53 @@ Here’s the simplified order:
     
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757834947389/4872d62c-e880-494c-b133-ce7a57a9effc.png align="center")
+
+### Filter Shelf
+
+📌 How to Add and Show Worksheet Filters in Tableau
+
+1. **Drag a field to the Filters shelf**
+    
+    * For example, drag `Category`, `Region`, `Segment`, `State`, or `City` into the **Filters** area.
+        
+    * This limits the data based on your chosen filter values.
+        
+2. **Right-click the Filter (e.g., Category) → Show Filter**
+    
+    * This makes the filter visible on the worksheet.
+        
+    * The filter will now appear on the **right-hand side of the view** (or in the Filters pane).
+        
+3. **Interactive Filtering**
+    
+    * Users can now check/uncheck boxes to show or hide values (e.g., Furniture, Office Supplies, Technology).
+        
+    * This makes your chart interactive and dynamic.
+        
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757843910661/9863478a-733f-427c-af3f-87f79768047c.png align="center")
+
+### 📌 Excluding Data in Tableau
+
+1. **Right-click on a mark (bar, point, etc.) → Select *Exclude***
+    
+    * For example, in the chart, you right-clicked on *Furniture → Bookcases* and selected **Exclude**.
+        
+    * Tableau immediately removes that category from the view.
+        
+2. **Automatic Filter Creation**
+    
+    * When you exclude an item, Tableau automatically adds a new filter called **Exclusions** in the **Filters shelf**.
+        
+    * This filter contains the values you excluded.
+        
+3. **Editing the Exclusion Filter**
+    
+    * Right-click the new **Exclusions filter → Edit Filter**.
+        
+    * You will see the list of all possible values, with excluded ones marked.
+        
+    * From here, you can adjust what is excluded or bring values back into the view.
+        
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757844198232/dcbe3fb9-06b3-48f7-a747-dc17baba36fb.png align="center")
