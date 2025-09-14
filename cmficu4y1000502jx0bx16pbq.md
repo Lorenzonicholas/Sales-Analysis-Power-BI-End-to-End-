@@ -425,34 +425,68 @@ Dimension filters in Tableau can be displayed in different **card modes** to con
         
     * Best for small lists.
         
-2. **Single Value (Dropdown)**
-    
-    * Single select, but shown as a dropdown.
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757851197946/6229f2b4-309e-46eb-b635-3795601b1e0a.png align="center")
+
+**Single Value (Dropdown)**
+
+1. * Single select, but shown as a dropdown.
         
     * Saves space compared to list.
         
-3. **Single Value (Slider)**
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757851290291/70577359-a4f9-484f-be76-adff48982340.png align="center")
+
+1. **Single Value (Slider)**
     
     * Displays a slider to choose one dimension value (used when values have order, like dates).
         
-4. **Multiple Values (List)**
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757851114395/9aa70981-8c75-411c-9440-fce063965926.png align="center")
+
+1. **Multiple Values (List)**
     
     * Checkboxes for multiple selections.
         
     * More space required, auto-updates when selection changes.
         
-5. **Multiple Values (Dropdown)**
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757851378909/52a08d11-4eb2-4645-9c73-e8a5f6378b5d.png align="center")
+
+1. **Multiple Values (Dropdown)**
     
     * Same as list, but compact.
         
     * Apply button is recommended.
         
-6. **Multiple Values (Custom List)**
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757851445047/47706db0-936a-4c6d-b1a2-ca905b71247a.png align="center")
+
+1. **Multiple Values (Custom List)**
     
     * Allows typing in values to filter.
         
     * Useful for long lists with search capability.
         
-7. **Wildcard Match**
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757851508537/a2266efe-c37e-4473-a851-72c04eb8f29d.png align="center")
+
+1. **Wildcard Match**
     
     * Filters values based on a text pattern (e.g., all items containing "phone").
+        
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757851547020/b4a66685-c8e1-4ab8-bd25-9eac5c74be2a.png align="center")
+
+### **Filter options**: **“Only Relevant Values.”**
+
+* Normally, if you filter by **State = Massachusetts**, the **City** filter dropdown would still show **all cities** in the dataset (even those not in Massachusetts). That’s because Tableau is pulling the full field list.
+    
+* But when you turn on **Only Relevant Values** for the City filter → Tableau dynamically updates it to show **only the cities inside Massachusetts.**
+    
+* This keeps your filters **context-aware**, meaning that one filter’s selection (State) directly controls which options appear in the next filter (City).
+    
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757853118283/41529139-40be-4bae-bfe3-a4d1512b47d9.png align="center")
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757853213430/32b0786f-7fc5-4978-84e5-5e84043ef7f3.png align="center")
