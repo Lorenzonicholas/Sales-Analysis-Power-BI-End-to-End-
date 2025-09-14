@@ -55,6 +55,8 @@ slug: tableau-sorting-grouping-filtering
 
 # Grouping
 
+## Group
+
 * **Select the members to group**
     
     * Click the **Paper** bar (or its axis label).
@@ -68,3 +70,21 @@ slug: tableau-sorting-grouping-filtering
         
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757775271817/7de71443-86bd-44a5-bfe0-e21ca7905f15.png align="center")
+
+## SET
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757818791630/cf075211-4f11-4916-9321-a1ea14aeeb93.png align="center")
+
+### Customised SET
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757820661701/c583e26c-fe17-43b9-9f07-15a7c5a901df.png align="center")
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757820709190/c43879fb-590e-4ec9-ae92-603f13145164.png align="center")
+
+### Separate Color for SET
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757820564592/32092378-a430-4032-b29e-5db9997564b1.png align="center")
+
+### Filter with SET
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757820470946/6a49a023-6417-4dc2-bc22-b81a7bc5d08a.png align="center")
