@@ -490,3 +490,18 @@ Dimension filters in Tableau can be displayed in different **card modes** to con
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757853118283/41529139-40be-4bae-bfe3-a4d1512b47d9.png align="center")
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757853213430/32b0786f-7fc5-4978-84e5-5e84043ef7f3.png align="center")
+
+### 🔹 Importance of the Apply Button
+
+The **Apply button** is useful when:
+
+* You are working with **large datasets** → prevents Tableau from recalculating the visualization each time you tick/untick a value.
+    
+* You want to **make multiple selections at once** before updating the view.
+    
+* It improves **performance** and **user experience** in dashboards, especially with many filters.
+    
+* Gives **control** to the user: changes are not applied until they click **Apply**.
+    
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757854881539/657a835b-e0d4-4d20-b0d9-3c282e647402.png align="center")
