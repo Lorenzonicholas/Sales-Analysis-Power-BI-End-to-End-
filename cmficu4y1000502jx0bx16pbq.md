@@ -51,3 +51,20 @@ slug: tableau-sorting-grouping-filtering
     * Sorts **within each outer partition** instead of across the whole view.
         
     * Example: With **Region** then **Sub-Category**, a nested sort orders Sub-Categories by Sales **inside each Region** separately.
+        
+
+# Grouping
+
+* **Select the members to group**
+    
+    * Click the **Paper** bar (or its axis label).
+        
+    * **Ctrl/⌘-click** the **Labels** bar so **both** are highlighted (you’ll see “2 items selected” in the tooltip).
+        
+* **Group from the selection**
+    
+    * On the small pop-up next to the selection, open the **caret/three-dot menu** and click **➕ Group Members**  
+        *(or just right-click one of the selected bars →* ***Group****; or click the* ***paperclip*** *icon if it appears).*
+        
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757775271817/7de71443-86bd-44a5-bfe0-e21ca7905f15.png align="center")
