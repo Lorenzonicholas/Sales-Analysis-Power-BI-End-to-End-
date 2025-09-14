@@ -300,3 +300,65 @@ Instead of always editing the Set manually, you can make things easier by showin
         
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757832429695/cb9cfb6e-18c6-40f4-8331-b545d77c65f9.png align="center")
+
+### 🧩 Tableau’s Order of Operations
+
+The **Order of Operations** in Tableau defines the sequence in which filters, computations, and actions are applied. Understanding this is crucial because applying filters at different stages can completely change the result of your visualization.
+
+Here’s the simplified order:
+
+1. **Extract Filters** – Applied first, restricts the data extracted from the source.
+    
+2. **Data Source Filters** – Limit rows/columns before they reach Tableau.
+    
+3. **Context Filters** – Set the context for other filters (e.g., Top N, Fixed LOD).
+    
+4. **Dimension Filters** – Filter based on categories (e.g., Region, Product).
+    
+5. **Measure Filters** – Applied on aggregated measures (e.g., SUM(Sales) &gt; 1000).
+    
+6. **Table Calculation Filters** – Filters after table calcs are computed (e.g., running totals).
+    
+
+👉 **Why it matters**:
+
+* Filters earlier in the order reduce the dataset more efficiently.
+    
+* Filters later (like Table Calc) only affect what’s already been computed and displayed.
+    
+* Misplacing filters can lead to unexpected results.
+    
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757833364929/21efbddb-86f8-461a-a59a-bc26a8240f30.png align="center")
+
+### Data Source Filters
+
+### 📌 How to Apply a Data Source Filter in Tableau
+
+1. **Right-click the Data Source** (e.g., *Maven Supplies*) in the Data Pane.
+    
+2. Select **Edit Data Source Filters…** from the dropdown menu.
+    
+3. In the pop-up window, click **Add…**.
+    
+4. From the field list, choose the field you want to filter on (e.g., **Order Date (MDY)**).
+    
+5. In the filter options, select **Range of Dates → Years**.
+    
+6. Choose the years you want to include (e.g., ✅ 2017, ✅ 2018).
+    
+7. Click **OK** to apply the filter.
+    
+
+---
+
+### 🔑 What this does:
+
+* A **Data Source Filter** applies before any sheet-level filters.
+    
+* It reduces the dataset at the source level, so Tableau only loads the filtered records.
+    
+* This improves performance and ensures consistency across all worksheets using this data source.
+    
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757834947389/4872d62c-e880-494c-b133-ce7a57a9effc.png align="center")
