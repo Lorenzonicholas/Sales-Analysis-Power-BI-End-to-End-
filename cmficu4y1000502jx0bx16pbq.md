@@ -8,50 +8,69 @@ slug: tableau-sorting-grouping-filtering
 
 # Sorting
 
-### Quick ways to sort in ascending and descending order
+### Quick Ways to Sort in Ascending and Descending Order in Tableau
+
+1. **Select the Chart**
+    
+    * Make sure your bar chart is active (for example, Sales by Sub-Category).
+        
+2. **Use the Sort Buttons on the Toolbar**
+    
+    * On the top toolbar, you’ll see two sort icons:
+        
+        * 🔼 **Ascending Sort** → sorts your bars from the smallest value to the largest.
+            
+        * 🔽 **Descending Sort** → sorts your bars from the largest value to the smallest.
+            
+    * Simply click one of these icons, and Tableau will reorder the bars accordingly.
+        
+3. **Click Directly on the Axis or Header**
+    
+    * Another quick way: hover near the axis label (like *Sub-Category*) or header in your chart.
+        
+    * A small sort icon will appear. Click it once for descending order, click again for ascending.
+        
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757773257993/c4762bea-1777-4d21-9410-9654f90fb9cc.png align="center")
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757773579122/dfbbdc49-3d20-46eb-b3c1-fe5c19ca1da0.png align="center")
 
-### Sort directly using the column value
+### Sorting Directly Using the Column Value in Tableau
+
+1. **Right-Click on the Field (Dimension/Measure) in Columns or Rows**
+    
+    * In your chart, right-click on the field you want to sort (here it’s **Sub-Category** in the Columns shelf).
+        
+2. **Choose Sort…**
+    
+    * From the dropdown menu, click **Sort…** to open the sorting dialog box.
+        
+3. **Select the Sort By Option**
+    
+    * In the Sort dialog box, you’ll see multiple options under **Sort By**:
+        
+        * **Data Source Order** → Keeps the order as it appears in the dataset.
+            
+        * **Alphabetic** → Sorts items alphabetically (A → Z or Z → A).
+            
+        * **Field** → Sorts based on the values of another field (e.g., Sales, Profit).
+            
+        * **Manual** → Lets you drag and drop items in the exact order you want.
+            
+        * **Nested** → Sorts within the context of another dimension (useful for hierarchies).
+            
+4. **Choose Field Sorting**
+    
+    * Select **Field**, then pick which measure to sort by (e.g., **SUM(Sales)**).
+        
+    * Choose **Ascending** (lowest to highest) or **Descending** (highest to lowest).
+        
+5. **Click OK**
+    
+    * Tableau will immediately reorder your bars based on the chosen field values.
+        
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757774062382/ba66f735-eca9-4775-a98f-56bd3ff8bbab.png align="center")
-
-* **Data source order**
-    
-    * Keeps the members exactly in the order they come from the source (or the default order of the dimension).
-        
-    * Use when the source already has a meaningful sequence.
-        
-* **Alphabetic**
-    
-    * Sorts A→Z or Z→A by the **member names** (e.g., “Accessories”, “Appliances”…).
-        
-    * Ignores any measures on the view.
-        
-* **Field** ✅ *(most common for charts)*
-    
-    * Sorts the dimension by the **value of a field** (often a measure like **Sales**).
-        
-    * Choose the **Field** (e.g., *Sales*), the **Aggregation** (SUM/AVG/etc.), and **Ascending/Descending**.
-        
-    * Example: “Sub-Category sorted by **SUM(Sales)** descending” → bars ordered from biggest to smallest.
-        
-* **Manual**
-    
-    * Lets you **drag members** into any custom order (or use the **Manual** list in the dialog).
-        
-    * Great for business-defined sequences (e.g., “High, Medium, Low”).
-        
-* **Nested**
-    
-    * Used when you have **multiple dimensions** in the view.
-        
-    * Sorts **within each outer partition** instead of across the whole view.
-        
-    * Example: With **Region** then **Sub-Category**, a nested sort orders Sub-Categories by Sales **inside each Region** separately.
-        
 
 # Grouping
 
