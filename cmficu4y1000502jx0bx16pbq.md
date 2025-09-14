@@ -505,3 +505,20 @@ The **Apply button** is useful when:
     
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757854881539/657a835b-e0d4-4d20-b0d9-3c282e647402.png align="center")
+
+### 📌 Applying Filters to Sheets in Tableau
+
+Filters in Tableau can be customized to impact **specific sheets** in a workbook. By default, a filter only applies to the sheet where it was created, but you can extend it to other sheets.
+
+**Options when applying filters:**
+
+1. **Only this Worksheet** → Filter applies only to the sheet where it was created.
+    
+2. **Selected Worksheets** → Filter applies to multiple chosen sheets (you manually select from a checklist).
+    
+3. **All Using this Data Source** → Filter applies to all sheets built from the same data source. Any new sheet using this data source will also get the filter.
+    
+4. **All Using Related Data Sources** → Filter applies to all sheets built from related data sources that share the same field (same name, type, and content).
+    
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757856146821/64b99e89-e053-4fab-9c3d-e02b85d899ea.png align="center")
