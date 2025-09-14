@@ -412,3 +412,47 @@ Here’s the simplified order:
         
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757844198232/dcbe3fb9-06b3-48f7-a747-dc17baba36fb.png align="center")
+
+### 📝 Dimension Filter Card Modes
+
+Dimension filters in Tableau can be displayed in different **card modes** to control how users interact with them:
+
+1. **Single Value (List)**
+    
+    * Displays as radio buttons.
+        
+    * Allows only one selection at a time.
+        
+    * Best for small lists.
+        
+2. **Single Value (Dropdown)**
+    
+    * Single select, but shown as a dropdown.
+        
+    * Saves space compared to list.
+        
+3. **Single Value (Slider)**
+    
+    * Displays a slider to choose one dimension value (used when values have order, like dates).
+        
+4. **Multiple Values (List)**
+    
+    * Checkboxes for multiple selections.
+        
+    * More space required, auto-updates when selection changes.
+        
+5. **Multiple Values (Dropdown)**
+    
+    * Same as list, but compact.
+        
+    * Apply button is recommended.
+        
+6. **Multiple Values (Custom List)**
+    
+    * Allows typing in values to filter.
+        
+    * Useful for long lists with search capability.
+        
+7. **Wildcard Match**
+    
+    * Filters values based on a text pattern (e.g., all items containing "phone").
