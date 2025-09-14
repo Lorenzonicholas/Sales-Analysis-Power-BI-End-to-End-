@@ -161,7 +161,7 @@ You can now use this set in other charts to compare these top customers against 
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757820709190/c43879fb-590e-4ec9-ae92-603f13145164.png align="center")
 
-### Separate Color for SET
+### Separate Colour for SET
 
 **How to Apply Separate Colors for a Set in Tableau**
 
