@@ -522,3 +522,79 @@ Filters in Tableau can be customized to impact **specific sheets** in a workbook
     
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757856146821/64b99e89-e053-4fab-9c3d-e02b85d899ea.png align="center")
+
+### 📌 Context Filters in Tableau
+
+* **Definition**: Context Filters are **dimension filters** that override Tableau’s normal order of operations.
+    
+* **Purpose**: They allow other filters to become **dependent** on them, making filtering more precise.
+    
+
+🔹 **Key Uses**:
+
+* Commonly used for **Dependent Top N Filters** (e.g., showing Top 5 products *within* a selected city).
+    
+* Helps improve **performance** by filtering out large chunks of data before applying other filters.
+    
+
+🔹 **Difference**:
+
+* **Standard Top N Filter** → Applies to the entire dataset first (e.g., Top 5 subcategories overall).
+    
+* **Dependent Top N Filter (with Context)** → Applies after context (e.g., Top 5 subcategories *within Akron*).
+    
+
+⚠️ **Note**:
+
+* **Measures** and aggregated fields **cannot** be placed in context filters.
+    
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757857195988/7e8fe8f6-4a00-42f1-96a5-24315be9f97c.png align="center")
+
+### 📌 Measure Filters in Tableau
+
+* **Definition**: Measure Filters are applied on quantitative fields (e.g., Sales, Profit, Quantity). They let you control the range of numeric values displayed in the view.
+    
+
+**🔹 Steps to Apply**
+
+1. Drag a measure (e.g., `Sales`) to the **Filters Shelf**.
+    
+2. Choose an **aggregation type**:
+    
+    * Sum, Average, Median, Count, Minimum, Maximum, Standard Deviation, Variance, etc.
+        
+3. Select an **interface for filtering**:
+    
+    * **Range of Values** → Define both lower & upper limits with two sliders.
+        
+    * **At Least** → Filter values greater than or equal to a threshold.
+        
+    * **At Most** → Filter values less than or equal to a threshold.
+        
+    * **Special** → Show only Null, Non-Null, or All values.
+        
+
+**🔹 Measure Filter Card Modes**
+
+* **Range of Values** → Two sliders (min & max).
+    
+* **At Least** → Left slider for minimum values.
+    
+* **At Most** → Right slider for maximum values.
+    
+* **Show Filter option** → Displays the interactive slider on the dashboard for users.
+    
+
+**💡 Pro Tips**
+
+* Use **conditional sets** instead of measure filters for better performance.
+    
+* Measure filters **apply after Dimension Filters** in Tableau’s order of operations.
+    
+* Useful for dashboards where you want end-users to adjust data ranges (e.g., filter sales between 10K–50K).
+    
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757860785839/ccc8a1f5-105c-4d62-a6aa-8c3d0e19c49f.png align="center")
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757860873956/10e31340-d13a-4922-ab56-2721e9443ba7.png align="center")
