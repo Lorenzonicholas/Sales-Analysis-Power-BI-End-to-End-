@@ -598,3 +598,57 @@ Filters in Tableau can be customized to impact **specific sheets** in a workbook
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757860785839/ccc8a1f5-105c-4d62-a6aa-8c3d0e19c49f.png align="center")
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757860873956/10e31340-d13a-4922-ab56-2721e9443ba7.png align="center")
+
+### 📅 Date Filters in Tableau
+
+Date Filters allow users to filter data based on date fields and can be set as **continuous** or **discrete**, each with specific options**.**
+
+**🔹 Types of Date Filters**
+
+1. **Relative Dates**
+    
+    * Filter data by dynamic intervals like last N days, weeks, months, or years.
+        
+    * Example: “Last 2 years” or “Previous 6 months.”
+        
+2. **Starting Date**
+    
+    * Single left slider to define a start date.
+        
+    * Includes all records from that date onward.
+        
+3. **Ending Date**
+    
+    * Single right slider to define an end date.
+        
+    * Includes all records up to that date.
+        
+4. **Range of Dates**
+    
+    * A pair of sliders to set both start and end dates for a custom date window.
+        
+5. **Special**
+    
+    * Handles **Null, Non-Null, or All Dates** values.
+        
+
+**🔹 Continuous vs Discrete Date Filters**
+
+* **Continuous**
+    
+    * Show timelines on a continuous axis.
+        
+    * Best for trends (e.g., daily sales over time).
+        
+* **Discrete**
+    
+    * Treat dates as categories (e.g., Years, Quarters, Months, Days).
+        
+    * Can be aggregated using **Count, Min, Max, Attribute**.
+        
+    * Useful for grouping or breaking down data.
+        
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757862226615/e4a6d647-0566-4015-b741-64a26cec74a1.png align="center")
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757862623119/257f5145-0a8c-4956-a4db-55e869dd186e.png align="center")
