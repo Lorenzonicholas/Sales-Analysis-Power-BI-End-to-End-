@@ -55,27 +55,88 @@ slug: tableau-sorting-grouping-filtering
 
 # Grouping
 
-## Group
+### How to Create a Group in Tableau
 
-* **Select the members to group**
+1. **Locate the Field**
     
-    * Click the **Paper** bar (or its axis label).
+    * In the **Data pane**, right-click on the field you want to group.
         
-    * **Ctrl/⌘-click** the **Labels** bar so **both** are highlighted (you’ll see “2 items selected” in the tooltip).
+    * In this example, you right-clicked on **Sub-Category**.
         
-* **Group from the selection**
+2. **Create Group**
     
-    * On the small pop-up next to the selection, open the **caret/three-dot menu** and click **➕ Group Members**  
-        *(or just right-click one of the selected bars →* ***Group****; or click the* ***paperclip*** *icon if it appears).*
+    * From the menu, go to **Create → Group**.
+        
+    * A dialog box called **Create Group** will open.
+        
+3. **Select Items to Group**
+    
+    * In the dialog, select multiple members (e.g., *Labels*, *Paper*) that you want to combine.
+        
+    * Click the **Group** button.
+        
+    * Tableau will now treat them as a single grouped item (e.g., *Labels + Paper*).
+        
+4. **Finalize the Group**
+    
+    * You can rename the group if needed.
+        
+    * Check the option **Include “Other”** if you want Tableau to automatically create an “Other” category for ungrouped members.
+        
+    * Click **OK** to save.
         
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757775271817/7de71443-86bd-44a5-bfe0-e21ca7905f15.png align="center")
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757831024951/53d2d4b9-4e6e-47d8-b67c-4ddbf4ea5b1e.png align="center")
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757830973175/2ff197ee-6277-42ff-a4ab-d8e90d252fe5.png align="center")
 
 ## SET
+
+**How to Create a Set from the Top 10 Customers in Tableau**
+
+1. In the view, **manually select the top 10 customer names** (by clicking and dragging over the bars, or using Ctrl + click).
+    
+2. Once the top 10 are highlighted, **hover over the selection menu** (the small drop-down icon on the tooltip bar).
+    
+3. From the menu, click **Create Set**.
+    
+
+You can now use this set in other charts to compare these top customers against the rest (e.g., Top 10 vs All Others).
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757818791630/cf075211-4f11-4916-9321-a1ea14aeeb93.png align="center")
 
 ### Customised SET
+
+**How to Create a Customized Set in Tableau (Top 10 Customers Example)**
+
+1. **Right-click on the field you want to use for the set.**
+    
+    * In your case, you right-clicked on **Customer Name**.
+        
+2. **Go to → Create → Set.**
+    
+    * From the dropdown, select **Set…**.
+        
+    * This opens the **Create Set window**.
+        
+3. **Customize the Set.**
+    
+    * In the set dialog box, you can define rules:
+        
+        * **General tab** → Manually pick specific customers to include/exclude.
+            
+        * **Condition tab** → Apply conditions (e.g., include customers with Sales &gt; 50,000).
+            
+        * **Top tab** → Dynamically choose Top/Bottom *N* customers (like Top 10 by Sales).
+            
+    * In your case, you selected **Top 10 by Sales (SUM)**.
+        
+4. **Click OK** to create the set.
+    
+    * The new set will appear under the **Sets** section in the Data Pane.
+        
+    * You can then drag it into the view for analysis.
+        
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757820661701/c583e26c-fe17-43b9-9f07-15a7c5a901df.png align="center")
 
@@ -83,12 +144,125 @@ slug: tableau-sorting-grouping-filtering
 
 ### Separate Color for SET
 
+**How to Apply Separate Colors for a Set in Tableau**
+
+1. **Drag the Set to the Marks Card**
+    
+    * You already created a set (for example: **Top 10 Customers by Sales**).
+        
+    * Drag this set field onto the **Color** shelf in the **Marks card** (as shown in your screenshot).
+        
+2. **Tableau Automatically Splits the Data**
+    
+    * Tableau will color-code based on the set:
+        
+        * **IN** → Members inside the set (e.g., Top 10 Customers).
+            
+        * **OUT** → Members outside the set (all others).
+            
+3. **Customize the Colors**
+    
+    * Click on the **Color legend**.
+        
+    * Assign one color for **IN** (e.g., blue) and another for **OUT** (e.g., gray).
+        
+    * This makes it easy to visually distinguish the focus group (Top 10) from the rest.
+        
+
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757820564592/32092378-a430-4032-b29e-5db9997564b1.png align="center")
 
 ### Filter with SET
 
+**How to Use a Set as a Filter in Tableau**
+
+1. **Create a Set**
+    
+    * First, you already created a set (example: **Top 10 Customers by Sales**).
+        
+2. **Drag the Set to the Filters Shelf**
+    
+    * Go to the **Data pane** (left side).
+        
+    * Find your created set (e.g., *Set – Top 10 All Time*).
+        
+    * Drag it onto the **Filters shelf** (as shown in your screenshot).
+        
+3. **What Happens**
+    
+    * Tableau filters the view to show only members **IN** the set (in this case, the Top 10 customers).
+        
+    * The chart now displays only those top customers, hiding all others.
+        
+
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757820470946/6a49a023-6417-4dc2-bc22-b81a7bc5d08a.png align="center")
 
-**Filtering what should be in the SET and out of the SET\\**
+### **Filtering What’s IN vs OUT of a Set in Tableau**
+
+When you create a Set (like *Top 10 All Time*), Tableau allows you to filter your view to show:
+
+* **IN the Set** → members that satisfy the Set condition (e.g., Top 10 Customers by Sales).
+    
+* **OUT of the Set** → all other members that don’t meet the condition.
+    
+
+---
+
+### **Steps (as shown in your screenshot):**
+
+1. Go to the **Filters shelf** where your Set (e.g., *Set – Top 10 All Time*) is placed.
+    
+2. Right-click on the Set and choose **Show In/Out of Set**.
+    
+3. A filter dialog appears (right side of your screenshot). Here, you can:
+    
+    * ✅ Check **In** → Only members inside the Set appear (Top 10).
+        
+    * ✅ Check **Out** → Only members outside the Set appear (all others).
+        
+    * ✅ Check both → Compare “In” vs “Out” in the same visualization.
+        
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757821083786/4da0d324-fdd8-4b93-961d-6556a7b33bcc.png align="center")
+
+### **Showing the Set Filter for Easy Selection**
+
+Instead of always editing the Set manually, you can make things easier by showing the filter directly on the right-hand side of the view.
+
+### **Steps:**
+
+1. Go to the **Filters shelf** where your Set (e.g., *Set – Top 10 All Time*) is located.
+    
+2. Right-click on the Set and choose **Show Filter**.
+    
+3. Tableau will display a filter card on the right side of your view (as shown in your screenshot).
+    
+    * ✅ You can now easily toggle between **In**, **Out**, or **All** without reopening the Set dialog box.
+        
+
+### **Why this is useful:**
+
+* Makes it **user-friendly** when building dashboards.
+    
+* Lets end-users quickly decide whether to see only top performers (*In*), the rest (*Out*), or everyone (*All*).
+    
+* Saves time compared to editing the Set each time.
+    
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757821342682/808c5dd8-675c-4d3f-843c-6625a943fe8a.png align="center")
+
+### Creating a hierarchy
+
+**How to Create a Category → Sub-Category Hierarchy in Tableau**
+
+1. In the **Data pane** on the left, locate the fields **Category** and **Sub-Category**.
+    
+2. **Click and drag** `Sub-Category` onto `Category`.
+    
+    * Tableau will prompt you to create a **new hierarchy**.
+        
+3. In the pop-up window, **enter a name** for the hierarchy (e.g., **Product**).
+    
+4. Click **OK**.
+    
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757828890311/fc28c6d7-879c-41ee-b6bf-47a20e4f3b03.png align="center")
