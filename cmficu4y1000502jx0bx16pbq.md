@@ -266,3 +266,18 @@ Instead of always editing the Set manually, you can make things easier by showin
     
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757828890311/fc28c6d7-879c-41ee-b6bf-47a20e4f3b03.png align="center")
+
+**🔽 Drilling Down from Category to Sub-Category**
+
+1. On your chart, look at the **Columns shelf** where you placed **Category** (and later grouped with Sub-Category).
+    
+2. Notice the small **“+” icon** next to *Category*.
+    
+3. Click the **“+”** to **drill down**:
+    
+    * First it shows the broader view (*Category* level: Furniture, Office Supplies, Technology).
+        
+    * When you press **“+”**, Tableau expands the hierarchy to show the **Sub-Category** level under each Category (e.g., Chairs, Tables, Bookcases under Furniture).
+        
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1757832429695/cb9cfb6e-18c6-40f4-8331-b545d77c65f9.png align="center")
