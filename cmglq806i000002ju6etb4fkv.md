@@ -194,3 +194,64 @@ in
 * “**Name wasn’t recognized**”: **case mismatch** or identifier not defined.
     
 * If the query breaks, delete the last **Applied Step** or open **Advanced Editor** and fix the code.
+    
+
+## M Language Data Types — Part 1: **Number**
+
+### What “number” means in M
+
+* `number` is M’s scalar numeric type.  
+    It can represent **integers** (e.g., `10`, `-5`) and **decimals** (e.g., `3.14`, `-0.5`).
+    
+* Column types in tables can be more specific (e.g., `Int64.Type`, `Decimal.Type`, `Double.Type`, `Currency.Type`) but when you work with **scalar** values in code, you’ll usually see plain `number`.
+    
+
+```plaintext
+let
+    v1 = 10,      // integer (number)
+    v2 = 3.14,    // decimal (number)
+    sum = v1 + v2
+in
+    sum            // 13.14
+```
+
+## Referencing another query
+
+If another query returns a scalar number, you can reuse it.
+
+Assume a query named **Declaring Variables** returns `10`:
+
+```plaintext
+let
+    v1 = 10,      // integer (number)
+    v2 = 3.14,    // decimal (number)
+    sum = v1 + v2 + #"Declaring Variables",   // name has a space → wrap in #"..."
+in
+    sum    // 23.14
+```
+
+## Converting to number (when data comes in as text)
+
+```plaintext
+Number.From("42")          // 42
+Number.FromText("3.14")    // 3.14
+// Culture-aware parsing:
+Number.FromText("3,14", "fr-FR")   // 3.14
+```
+
+For table columns:
+
+```plaintext
+Table.TransformColumnTypes(
+    Source,
+    {{"Amount", type number}}      // or Int64.Type / Decimal.Type
+)
+```
+
+## Common gotchas
+
+* **Locale/decimal separators**: use `Number.FromText(text, "culture")` if your source uses commas for decimals.
+    
+* **Type mismatch**: add `Number.From`/`Number.FromText` before math if values arrive as text.
+    
+* **Spaces in names**: wrap query/step names in `#"...“` when referencing them.
