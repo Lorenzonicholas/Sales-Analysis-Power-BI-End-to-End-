@@ -230,28 +230,214 @@ in
     sum    // 23.14
 ```
 
-## Converting to number (when data comes in as text)
+## M Language Data Types — Part 2 - **Text**
+
+### What is `text` in M?
+
+* A **scalar string** value (names, sentences, IDs).
+    
+* **Surrounded by double quotes**: `"Hello"`.  
+    Even `"123"` is **text**, not a number.
+    
+
+### Declaring & concatenating
 
 ```plaintext
-Number.From("42")          // 42
-Number.FromText("3.14")    // 3.14
-// Culture-aware parsing:
-Number.FromText("3,14", "fr-FR")   // 3.14
+let
+    name     = "Stacy",
+    greeting = "Hello",
+    msg      = greeting & " " & name     // "Hello Stacy"
+in
+    msg
 ```
 
-For table columns:
+* Use `&` to concatenate.
+    
+* Add spaces/punctuation as needed: `"Hello, " & name & "!"`
+    
+
+## Mixing text with numbers
+
+You can’t concat a number directly—**convert it** first.
+
+`Text.From(value)` – generic, culture-aware for many types
 
 ```plaintext
-Table.TransformColumnTypes(
-    Source,
-    {{"Amount", type number}}      // or Int64.Type / Decimal.Type
-)
+let
+    qty   = 5,                      // number
+    line  = "Qty: " & Text.From(qty)
+in
+    line                             // "Qty: 5"
 ```
 
-## Common gotchas
+### **Text.From()**
 
-* **Locale/decimal separators**: use `Number.FromText(text, "culture")` if your source uses commas for decimals.
+* `Text.From(value, [culture])` = Swiss-army knife. Converts *many* types (number, date, logical, etc.) to text with a basic/default rendering. Minimal control over formatting.
     
-* **Type mismatch**: add `Number.From`/`Number.FromText` before math if values arrive as text.
+
+### **Number.ToText()**
+
+* `Number.ToText(number, [format], [culture])` = Precision tool *just for numbers*. Lets you control **format strings** (decimals, thousands, percent, etc.) and culture.
     
-* **Spaces in names**: wrap query/step names in `#"...“` when referencing them.
+
+| Aspect | `Text.From` | `Number.ToText` |
+| --- | --- | --- |
+| Input types | Many (number, date, datetime, logical, etc.) | Numbers only |
+| Formatting control | Low (no format string) | High (supports format patterns) |
+
+### Culture & formatting (when needed)
+
+```plaintext
+Number.ToText(1234.56, "N", "en-US")    // "1,234.56"
+```
+
+`"N"` is the **Number** format specifier used by `Number.ToText`.
+
+**What it does:** formats the number with **thousands separators** and a **default number of decimal places** for the culture (typically **2**)
+
+**Control decimals with a precision specifier**
+
+* `"N0"` → `1,235`
+    
+* `"N2"` → `1,234.56`
+    
+* `"N4"` → `1,234.5600`
+    
+
+### Escaping quotes & special cases
+
+2 double quotes either side ““ ““
+
+```plaintext
+let
+    q1 = "He said ""Hi""",          // -> He said "Hi"
+    // Name with spaces as a variable/step name:
+    #"Customer Name" = "A. Lee",
+    out = #"Customer Name"
+in
+    out
+```
+
+## Common `Text.*` helpers (80/20)
+
+```plaintext
+Text.Lower("ABC")            // "abc"
+Text.Upper("abc")            // "ABC"
+Text.Trim("  x ")            // "x"
+Text.Clean("a b")            // remove non-printables
+Text.Length("Hello")         // 5
+Text.Contains("Power Query","query", Comparer.OrdinalIgnoreCase) // true
+Text.Replace("a-b-c","-","/")           // "a/b/c"
+Text.Split("a,b,c", ",")                 // {"a","b","c"}
+Text.Combine({"A","B"},"; ")             // "A; B"
+Text.Start("abcdef", 3)                  // "abc"
+Text.End("abcdef", 2)                    // "ef"
+```
+
+### M Language Data Types — **Logical (Boolean)**
+
+**What it is:** A scalar that can be only `true` or `false` (nullable: can also be `null`). Used in comparisons, filters, and `if … then … else`.
+
+### Basics
+
+```plaintext
+let
+    input1 = 5,
+    input2 = 6,
+    eq  = input1 = input2,      // false
+    neq = input1 <> input2      // true
+in
+    neq
+```
+
+**Text comparison is case-sensitive**
+
+```plaintext
+"Hi" = "hi"    // false
+```
+
+## M Language — Null & Date/Time (Quick Study Note)
+
+### Null **vs** Blank **vs** 0
+
+* `null` = missing/unknown value (no type).
+    
+* **Blank/space** = a **text** value like `" "` (not null).
+    
+* `0` = a **number**.
+    
+* Math with `null` → `null`; text with `null` → **error** (coalesce first).
+    
+
+```plaintext
+1 + null                 // null
+"Hello" & null           // error
+```
+
+### Logical (Boolean) quickies
+
+* Values: `true`, `false` (nullable: can be `null`).
+    
+* Comparisons: `= <> < > <= >=`
+    
+* Logic: `and or not`
+    
+
+```plaintext
+5 <> 6 and "Hi" <> "hi"          // true (case-sensitive)
+Text.Compare("Hi","hi", Comparer.OrdinalIgnoreCase)=0   // true
+```
+
+## M Language — Date/Time (Quick Study Note)
+
+### Date/Time Literal Constructors
+
+Use lower-case **hash** literals:
+
+* **Date:** `#date(YYYY, MM, DD)`
+    
+* **Time:** `#time(HH, MM, SS)`
+    
+* **DateTime:** `#datetime(YYYY, MM, DD, HH, MM, SS)`
+    
+* (Also: `#datetimezone(...)`)
+    
+
+```plaintext
+let
+  d  = #date(2025, 5, 23),
+  t  = #time(10, 15, 25),
+  dt = #datetime(2025, 5, 23, 10, 15, 25)
+in dt                                          // 5/23/2025 10:15:25 AM
+```
+
+### Combine a date and a time
+
+Don’t use `&` (that makes **text**). Build a real datetime:
+
+```plaintext
+let
+  d = #date(2025,5,23),
+  t = #time(10,15,25),
+  dt = #datetime(Date.Year(d), Date.Month(d), Date.Day(d),
+                 Time.Hour(t), Time.Minute(t), Time.Second(t))
+in dt         // 5/23/2025 10:15:25 AM
+```
+
+## Formatting & Parsing (culture-aware)
+
+* To text:
+    
+
+```plaintext
+Date.ToText(d, "dd MMM yyyy", "en-GB")          // "23 May 2025"
+Time.ToText(t, "HH:mm:ss")
+DateTime.ToText(dt, "yyyy-MM-dd HH:mm:ss")
+```
+
+* From text:
+    
+
+```plaintext
+Date.FromText("23/05/2025", "en-GB")   // 5/23/2025
+```
