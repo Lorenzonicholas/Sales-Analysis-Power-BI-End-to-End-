@@ -23,7 +23,7 @@ Power Query is Power BI’s **data preparation** layer. It lets you **connect**,
 * Combine many files from a folder with one reusable pattern
     
 
-## What is the M language?
+### What is the M language?
 
 **M** (for *Mashup*) is the scripting language behind Power Query. Every click you do in the UI is recorded as **M steps** in a `let … in` pipeline. You can read or edit this code in **Advanced Editor** to automate and customize transformations.
 
@@ -38,14 +38,14 @@ Power Query is Power BI’s **data preparation** layer. It lets you **connect**,
 * **Safe handling**: `try … otherwise` to guard against errors.
     
 
-## Mental model
+### Mental model
 
 * A query is a **sequence of steps**; each step returns a table to the next.
     
 * Keep **data shaping in Power Query**, do **calculations in DAX** later.
     
 
-## Why use M at all?
+### Why use M at all?
 
 * **Repeatability**: one click = one recorded step, replays on refresh.
     
@@ -56,12 +56,12 @@ Power Query is Power BI’s **data preparation** layer. It lets you **connect**,
 
 ## Power Query Editor — Quick Start (Hands-on)
 
-## Open the Editor
+### Open the Editor
 
 * In **Power BI Desktop**, go to **Home → Transform data** to open **Power Query** (the data prep window).
     
 
-## Connect to data
+### Connect to data
 
 * **Home → New Source** → pick your source (Excel, CSV, SQL Server, etc.).
     
@@ -84,7 +84,7 @@ You can:
 * **Home → Advanced Editor** shows the **entire query** (`let … in`) so you can edit or paste code.
     
 
-## Understand “Applied Steps”
+### Understand “Applied Steps”
 
 Power Query records every action as a step (top-right panel):
 
