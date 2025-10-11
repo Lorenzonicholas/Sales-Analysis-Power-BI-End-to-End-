@@ -111,3 +111,86 @@ Power Query records every action as a step (top-right panel):
 `= Table.TransformColumnTypes(#"Promoted Headers",{{"Product ID", Int64.Type}, {" Product Name", type text}, {" Category", type text}, {" Price", type number}, {" Quantity in Stock", Int64.Type}, {" Discount", type number}, {" Date Added", type text}})`
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1760156039813/e25e0a45-6c32-440f-8ba9-84ff362cd616.png align="center")
+
+## M Language Basics — Variables & Comments (Quick Study Note)
+
+### Where to write M
+
+* **Home → Transform data** → **Advanced Editor** (entire query).
+    
+* Or use the **Formula bar** to edit the **selected step** (enable via *View → Formula bar*).
+    
+
+### 1) The `let … in` pattern
+
+* `let`: define variables/steps.
+    
+* `in`: return the final expression/value.
+    
+
+```plaintext
+let
+    x   = 10,            // first variable
+    y   = 20,            // second variable
+    sum = x + y          // last variable → no comma here
+in
+    sum                   // query returns 30
+```
+
+**Rules**
+
+* Put a **comma after every variable** except the last one.
+    
+* M is **case-sensitive**: `y` ≠ `Y`.
+    
+
+```plaintext
+let
+    y = 20
+in
+    Y       // Error: different case
+```
+
+### 2) Variable names
+
+* Normal identifiers: `TotalSales`, `x1`, `_stage`.
+    
+* If you need **spaces or special characters**, wrap the name with double quotations and add the **#** symbol:
+    
+
+```plaintext
+let
+    #"My Variable 1" = 10
+in
+    #"My Variable 1"
+```
+
+### 3) Comments
+
+Comments are ignored at runtime and great for documentation.
+
+* **Single-line**: `// comment`
+    
+* **Multi-line**: `/* comment block */`
+    
+
+```plaintext
+let
+    // Inputs
+    x = 10,
+    y = 20,
+
+    /* Business rule:
+       Use arithmetic sum for demo */
+    sum = x + y
+in
+    sum
+```
+
+### 4) Quick troubleshooting
+
+* “**Token Literal expected**”: often a **missing comma** or extra comma after the last variable.
+    
+* “**Name wasn’t recognized**”: **case mismatch** or identifier not defined.
+    
+* If the query breaks, delete the last **Applied Step** or open **Advanced Editor** and fix the code.
