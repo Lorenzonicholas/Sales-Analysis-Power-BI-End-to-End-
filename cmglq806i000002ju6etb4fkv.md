@@ -715,3 +715,73 @@ let
 in
   Grade
 ```
+
+## Power Query M — Built-in vs Custom Functions (
+
+### Built-in functions
+
+Predefined helpers like:
+
+* `Number.IsEven(6)` → `true`
+    
+* `Number.IsOdd(7)` → `true`
+    
+* `Text.Upper("abc")`, `Date.Year(#date(2025,5,1))`, `Table.SelectRows(...)`
+    
+
+They each do one specific task. Names are **case-sensitive** (e.g., `Number.IsEven`, not `number.iseven`).
+
+### Custom functions (your own)
+
+**Shape:**
+
+```plaintext
+FunctionName = (param1 as number, param2 as text) => <expression>
+```
+
+* Parameters can be annotated: `as number`, `as text`, `as list`, `as date`, `as datetime`, `as logical`.
+    
+* The body (`<expression>`) can be a single expression **or** a full `let … in` block.
+    
+
+### 1) Example
+
+```plaintext
+let
+    AddFunction = (num1 as number,num2 as number) => 
+        num1 + num2
+in
+    AddFunction(5,10)  // 15
+```
+
+### 2) Return a label based on a number
+
+```plaintext
+sign_cf = (n as number) =>
+    if n > 0 then "Positive"
+    else if n = 0 then "Zero"
+    else "Negative"
+```
+
+### 3) Function with its own `let … in` (clear & scalable)
+
+```plaintext
+let
+    TotalProfit= (sellprice as number,buyprice as number , quntity as number ) =>
+    let
+        revinue = sellprice * quntity,
+        cost = buyprice * quntity,
+        Profit = revinue-cost
+    in 
+        Profit
+in
+    TotalProfit(20,10,50)
+```
+
+---
+
+## Calling vs. Invoking
+
+* **Direct call in code:** `revenue_cf(120, 2)` → `120`
+    
+* **Invoke via UI:** If you just reference the function name as the query output, Power Query shows an **Invoke** button to supply arguments interactively (creates a new query per invocation).
