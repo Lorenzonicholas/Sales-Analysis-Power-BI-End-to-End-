@@ -877,7 +877,7 @@ else "Non-computer products"
 
 ---
 
-## Gotchas & tips
+## tips
 
 * **Case-sensitive by default.** Use `Comparer.OrdinalIgnoreCase` when needed.
     
@@ -896,3 +896,105 @@ else "Non-computer products"
     ```plaintext
     Text.Combine({"A","B","C"}, "#(lf)")              // "A\nB\nC"
     ```
+    
+
+## Power Query M — Number Functions
+
+### Test table
+
+| EmployeeID | Name | Salary |
+| --- | --- | --- |
+| 101 | John Smith | 5000 |
+| 102 | Emma Johnson | 7500 |
+| 103 | Ava Williams | \-1200 |
+| 104 | Lucas Brown | 3200 |
+| 105 | Mia Davis | 0 |
+| 106 | Noah Miller | \-2500 |
+| 107 | Olivia Moore | 9800 |
+| 108 | Liam Wilson | 6200 |
+| 109 | Sophia Taylor | 4300 |
+| 110 | James Clark | \-1500 |
+
+---
+
+### Core number functions (single-value examples)
+
+```plaintext
+Number.IsOdd(5)                  // true
+Number.IsOdd(6)                  // false
+
+Number.IsEven(6)                 // true
+Number.IsEven(5)                 // false
+
+Number.Mod(7, 2)                 // 1    (remainder of 7 ÷ 2)
+Number.Mod(6, 2)                 // 0
+
+Number.Abs(-1200)                // 1200
+Number.Abs(2500)                 // 2500
+
+Number.Sign(9800)                // 1    (positive)
+Number.Sign(0)                   // 0
+Number.Sign(-1500)               // -1
+
+Number.FromText("123")           // 123  (number)
+Number.ToText(1234.56)           // "1234.56" (text)
+
+Number.ToText(1234.56, "N2", "en-US") // "1,234.56" (formatted)
+```
+
+---
+
+### In the table (Custom Column patterns)
+
+### 1) Odd/Even flags via built-ins
+
+```plaintext
+// Is salary odd?
+Number.IsOdd([Salary])                 // e.g., 5000 → false
+
+// Is salary even?
+Number.IsEven([Salary])                // e.g., 6200 → true
+```
+
+### 2) Odd/Even/Zero via remainder
+
+```plaintext
+let
+    r = Number.Mod([Salary], 2)
+in
+    if [Salary] = 0 then "Zero"        // 0 first, or it looks even
+    else if r = 0 then "Even"
+    else "Odd"
+```
+
+### 3) Absolute salary (remove sign)
+
+```plaintext
+Number.Abs([Salary])                   // -1200 → 1200
+```
+
+### 4) Sign label (− / 0 / +)
+
+```plaintext
+let s = Number.Sign([Salary])
+in  if s = 0 then "Zero"
+    else if s = -1 then "Negative"
+    else "Positive"
+```
+
+### 5) Convert text → number before math
+
+*(If a column is text but should be numeric)*
+
+```plaintext
+// Example: [SalaryText] = "6200"
+Number.FromText([SalaryText])          // 6200 (number)
+```
+
+### 6) Convert number → text for text functions/concat
+
+```plaintext
+"Salary: " & Number.ToText([Salary])   // "Salary: 5000"
+```
+
+---
