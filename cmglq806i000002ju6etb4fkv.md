@@ -441,3 +441,210 @@ DateTime.ToText(dt, "yyyy-MM-dd HH:mm:ss")
 ```plaintext
 Date.FromText("23/05/2025", "en-GB")   // 5/23/2025
 ```
+
+## M Language — Basic Operations - Arithmetic operation
+
+### 1 ) Operators: `+ - * / ^ rem`
+
+```plaintext
+let
+  x = 10, y = 5,
+  Sum   = x + y,        // 15
+  Diff  = x - y,        // 5
+  Prod  = x * y,        // 50
+  Div   = x / y,        // 2
+  Pow   = Number.Power(x,2)  // 100   (x ^ 2)
+  Mod   = Number.Mod(x, y)     // 1  (remainder) (x rem 3)  
+in  [Sum=Sum, Diff=Diff, Prod=Prod, Div=Div, Pow=Pow, Mod=Mod]
+```
+
+**Tips**
+
+* Division by 0 → error; guard first.
+    
+* If values might be text, convert: `Number.From(text)`.
+    
+
+---
+
+### 2) M Language — Basic Operations - Comparison (returns logical)
+
+Operators: `= <> < > <= >=`
+
+```plaintext
+5 = 5      // true
+5 <> 6     // true
+"Hi" = "hi" // false (M is case-sensitive)
+```
+
+Case-insensitive text compare:
+
+```plaintext
+Text.Compare("Hi","hi", Comparer.OrdinalIgnoreCase) = 0   // true
+```
+
+---
+
+## 3) Logical (booleans)
+
+Operators: `and or not` *(short-circuiting)*
+
+```plaintext
+true and false   // false
+true or false    // true
+not false        // true
+```
+
+With conditions:
+
+```plaintext
+let
+  x = 4, y = 10,
+  Both  = (x = 4) and (y = 11),   // false
+  Either= (x = 4) or  (y = 100),  // true
+  Invert= not (x = 4)             // false
+in  [Both=Both, Either=Either, Invert=Invert]
+```
+
+**Readability:** use parentheses around each condition.
+
+---
+
+## 4) Null behavior (important)
+
+* Math with `null` → `null`: `1 + null` = `null`
+    
+* Text with `null` → **error**: `"Hi" & null` → error  
+    Guard/coalesce:
+    
+
+```plaintext
+let 
+v = 5         // Hi 5 
+// v = null   // Hi
+in 
+"Hi " & (if v=null then "" else Text.From(v))
+```
+
+* Logical tests with `null` return `null`; test for null explicitly.
+    
+
+---
+
+## 5) Operator precedence (highest → lowest)
+
+1. `^`
+    
+2. `* / rem`
+    
+3. `+ -`
+    
+4. Comparisons (`= <> < > <= >=`)
+    
+5. `not`
+    
+6. `and`
+    
+7. `or`  
+    Use parentheses to make intent clear.
+    
+
+---
+
+## M Language — If / Else
+
+### Syntax
+
+```plaintext
+if <condition> then <value-if-true> else <value-if-false>
+```
+
+* All keywords are **lowercase**.
+    
+* `<condition>` must evaluate to **true/false** (logical).
+    
+* The two result branches should be the **same type** (both text, both number, etc.).
+    
+
+### Simple example
+
+```plaintext
+let
+  n1 = 10,
+  n2 = 11,
+  result = if n1 > n2 then "Greater" else "Smaller"
+in
+  result
+```
+
+## Text example (case-sensitive)
+
+```plaintext
+let
+  q = "Q1",
+  msg = if q = "Q1" then "This is Quarter 1" else "Unknown quarter"
+in
+  msg
+```
+
+## Case-insensitive compare
+
+```plaintext
+if Text.Compare(q, "q1", Comparer.OrdinalIgnoreCase) = 0
+then "This is Quarter 1" else "Unknown"
+```
+
+## Nested if (readable pattern)
+
+Use parentheses to keep it clear:
+
+```plaintext
+let
+  q = "Q3",
+  msg =
+    if q = "Q1" then "Quarter 1" else
+    (
+      if q = "Q2" then "Quarter 2" else
+      (
+        if q = "Q3" then "Quarter 3" else "Quarter 4"
+      )
+    )
+in
+  msg
+```
+
+## “Else-if” style (cleaner)
+
+Just chain `else if` (same as nested, easier to read):
+
+```plaintext
+let
+  q = "Q3",
+  msg =
+    if      q = "Q1" then "Quarter 1"
+    else if q = "Q2" then "Quarter 2"
+    else if q = "Q3" then "Quarter 3"
+    else                 "Quarter 4"
+in
+  msg
+```
+
+## With booleans and math
+
+```plaintext
+let
+  x = 5, y = 3,
+  verdict = if (x > y) and (x - y >= 2) then "OK" else "Check"
+in
+  verdict
+```
+
+## Null-safe condition
+
+Comparisons with `null` return `null` (not false). Guard first:
+
+```plaintext
+if q <> null and q = "Q1" then "Quarter 1" else "Unknown"
+```
+
+**Cheat line:** keep results the same type, use `else if` for readability, wrap complex conditions in parentheses, and guard `null` before comparing.
