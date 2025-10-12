@@ -619,14 +619,12 @@ Just chain `else if` (same as nested, easier to read):
 
 ```plaintext
 let
-  q = "Q3",
-  msg =
-    if      q = "Q1" then "Quarter 1"
-    else if q = "Q2" then "Quarter 2"
-    else if q = "Q3" then "Quarter 3"
-    else                 "Quarter 4"
+    Quter = "Q3",
+    result = if  Quter = "Q1" then "This is Quter 1 " else
+             (if Quter = "Q2" then "This is Quter 2 " else
+             if Quter = "Q3" then "This is Quter 3 " else "This is Quter 4 " ) 
 in
-  msg
+    result   // This is Quter 3 
 ```
 
 ## With booleans and math
@@ -648,3 +646,72 @@ if q <> null and q = "Q1" then "Quarter 1" else "Unknown"
 ```
 
 **Cheat line:** keep results the same type, use `else if` for readability, wrap complex conditions in parentheses, and guard `null` before comparing.
+
+## Power Query Parameters — Quick Study Note
+
+### What is a Parameter?
+
+A **named value** (number, text, date, logical, etc.) you define once and **reuse across queries** for filters, calculations, and connection settings. It removes hard-coding and makes refreshes flexible.
+
+### Why use them?
+
+* **Reusability:** one value → many queries.
+    
+* **Maintainability:** change in one place updates everywhere.
+    
+* **Flexibility:** swap servers, databases, or filter cutoffs.
+    
+* **Performance:** push filters early (e.g., SQL folding).
+    
+
+### How to create
+
+**Power Query Editor → Home → Manage Parameters → New Parameter**
+
+* Name, Description (optional)
+    
+* **Type**: Number / Text / Date / True/False
+    
+* **Suggested Values**: Any value, List of values, or Query
+    
+* Set **Current Value** (used at refresh)
+    
+
+### Typical uses
+
+1. **Filter rows**
+    
+
+```plaintext
+let
+  CutoffDate = #"Cutoff Date",                    // date parameter
+  Filtered = Table.SelectRows(Source, each [OrderDate] >= CutoffDate)
+in
+  Filtered
+```
+
+2. **Switch connections**
+    
+
+```plaintext
+let
+  Server = #"Server Name",                        // text parameter
+  Db     = #"Database Name",
+  Source = Sql.Database(Server, Db)
+in
+  Source
+```
+
+3. **Business rules**
+    
+
+```plaintext
+let
+  Score = #"Score Parameter",                     // number parameter
+  Grade = if Score >= 90 then "A"
+          else if Score >= 80 then "B"
+          else if Score >= 70 then "C"
+          else "D"
+in
+  Grade
+```
