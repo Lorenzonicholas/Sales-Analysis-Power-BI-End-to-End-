@@ -785,3 +785,114 @@ in
 * **Direct call in code:** `revenue_cf(120, 2)` → `120`
     
 * **Invoke via UI:** If you just reference the function name as the query output, Power Query shows an **Invoke** button to supply arguments interactively (creates a new query per invocation).
+    
+
+## Power Query M — Text Functions
+
+### Test table
+
+| Product ID | Product Name |
+| --- | --- |
+| 1 | ␠Apple iPhone 14 Pro␠ |
+| 2 | SAMSUNG galaxy s22 |
+| 3 | Sony Noise Cancelling Headphones |
+| 4 | LG UltraWide Monitor |
+| 5 | Apple Watch Series 7 |
+| 6 | Fitbit Charge 5 |
+| 7 | Razer Gaming Mouse |
+| 8 | Google Pixel 6 |
+| 9 | Bose QuietComfort 35 |
+| 10 | canon camera␠␠ |
+
+Legend: `␠` marks intentional spaces (leading/trailing) to test `Text.Trim`.
+
+---
+
+### Core functions (with commented results)
+
+```plaintext
+Text.Length("Hello World")                // 11  (spaces count)
+Text.Upper("Hello")                       // "HELLO"
+Text.Lower("Hello")                       // "hello"
+Text.Trim("  Hello  ")                    // "Hello" (removes leading/trailing)
+Text.Start("Hello World", 5)              // "Hello"
+Text.End("Hello World  ", 5)              // "World"  (trim first if needed)
+Text.Replace("23/05/2025", "/", "-")      // "23-05-2025"
+Text.Contains("Power Query","query")      // false (case-sensitive)
+Text.Contains("Power Query","query", Comparer.OrdinalIgnoreCase) // true
+```
+
+---
+
+### In a table (Custom Column patterns)
+
+### 1) Length of Product Name
+
+```plaintext
+Text.Length([Product Name])               // e.g., "Apple iPhone 14 Pro" → 20
+```
+
+### 2) Upper/Lower based on a condition
+
+```plaintext
+if [Product ID] = 1 or [Product ID] = 2
+then Text.Lower([Product Name])           // rows 1–2: lowercased
+else Text.Upper([Product Name])           // others: UPPERCASED
+```
+
+### 3) Trim then take first N chars
+
+```plaintext
+Text.Start( Text.Trim([Product Name]), 5) // row 1 "␠Apple..." → "Apple"
+```
+
+### 4) Classify by last character (after trim)
+
+```plaintext
+let last = Text.End(Text.Trim([Product Name]), 1)
+in  if last = "5" then "5 series"         // e.g., "Fitbit Charge 5" → "5 series"
+    else if last = "6" then "6 series"    // e.g., "Google Pixel 6"  → "6 series"
+    else "Other series"                   // others
+```
+
+### 5) Replace multiple words
+
+```plaintext
+Text.Replace(
+    Text.Replace([Product Name], "Mouse", "Computer"),
+    "Monitor", "Computer"
+)
+// "Razer Gaming Mouse"  → "Razer Gaming Computer"
+// "LG UltraWide Monitor"→ "LG UltraWide Computer"
+```
+
+### 6) Flag computer products (case-insensitive search)
+
+```plaintext
+if Text.Contains([Product Name], "Monitor", Comparer.OrdinalIgnoreCase)
+   or Text.Contains([Product Name], "Mouse", Comparer.OrdinalIgnoreCase)
+then "Computer products"                  // rows 4 & 7
+else "Non-computer products"
+```
+
+---
+
+## Gotchas & tips
+
+* **Case-sensitive by default.** Use `Comparer.OrdinalIgnoreCase` when needed.
+    
+* **Spaces matter.** `Text.Length` counts them; `Text.Trim` before compare/slice.
+    
+* **Trailing spaces break matches.** Always trim before `Text.End/Start/=` checks.
+    
+* **Nulls throw on concat.**
+    
+    ```plaintext
+    "Val: " & (if x=null then "" else Text.From(x))   // safe
+    ```
+    
+* **Multi-line outputs:**
+    
+    ```plaintext
+    Text.Combine({"A","B","C"}, "#(lf)")              // "A\nB\nC"
+    ```
