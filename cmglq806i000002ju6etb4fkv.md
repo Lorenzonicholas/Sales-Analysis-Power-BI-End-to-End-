@@ -624,7 +624,7 @@ let
              (if Quter = "Q2" then "This is Quter 2 " else
              if Quter = "Q3" then "This is Quter 3 " else "This is Quter 4 " ) 
 in
-    result   // This is Quter 3 
+    result   // This is Quter 3
 ```
 
 ## With booleans and math
@@ -998,3 +998,118 @@ Number.FromText([SalaryText])          // 6200 (number)
 ```
 
 ---
+
+## Power Query M — Date/Time Functions
+
+### Create values
+
+```plaintext
+// Date / Time / DateTime constructors
+#date(2025, 2, 9)                       // 2025-02-09
+#time(7, 18, 3)                          // 07:18:03
+#datetime(2025, 2, 9, 7, 18, 3)          // 2025-02-09 07:18:03
+```
+
+### Current timestamp & parts
+
+```plaintext
+DateTime.LocalNow()                      // current local DateTime
+DateTime.Date(DateTime.LocalNow())       // today's date (no time)
+Date.Year(#date(2025,12,11))             // 2025
+Date.Month(#date(2025,12,11))            // 12
+Date.Day(#date(2025,12,11))              // 11
+
+Time.Hour(#datetime(2024,12,1,9,30,0))   // 9
+Time.Minute(#datetime(2024,12,1,9,30,0)) // 30
+Time.Second(#datetime(2024,12,1,9,30,0)) // 0
+```
+
+### Convert text → Date/Time (culture-aware)
+
+```plaintext
+// Use FromText when parsing strings; pass culture if needed
+DateTime.FromText("01-12-2024 09:00:00", "en-GB")   // dd-MM-yyyy
+Date.FromText("12/01/2024", "en-US")                // MM/dd/yyyy
+```
+
+### Add days / months / years
+
+```plaintext
+Date.AddDays(#date(2024,12,11), 10)      // 2024-12-21
+Date.AddDays(#date(2024,12,11), -10)     // 2024-12-01 (subtract)
+
+Date.AddMonths(#date(2024,12,1), 3)      // 2025-03-01
+Date.AddYears(#date(2024,12,1), 2)       // 2026-12-01
+```
+
+### Differences
+
+```plaintext
+// Subtract DateTimes or Dates directly
+#datetime(2024,12,1,10,30,0) - #datetime(2024,12,1,9,0,0)
+// duration(0, 1, 30, 0) -> 1 hour 30 minutes
+
+Duration.Days( #date(2024,12,21) - #date(2024,12,11) )     // 10
+Duration.Hours( #datetime(…end…) - #datetime(…start…) )    // total hours
+```
+
+### In a table (Custom Columns)
+
+```plaintext
+// 1) Extract date from a DateTime column
+DateTime.Date([StartDateTime])
+
+// 2) Year / Month / Day from StartDateTime
+Date.Year([StartDateTime])
+Date.Month([StartDateTime])
+Date.Day([StartDateTime])
+
+// 3) Month name
+Date.MonthName([StartDateTime])   // e.g., "December"
+
+// 4) Hour/Minute/Second
+Time.Hour([StartDateTime])
+Time.Minute([StartDateTime])
+Time.Second([StartDateTime])
+
+// 5) Add 13 days to EndDateTime
+Date.AddDays([EndDateTime], 13)
+
+// 6) Add 2 years only when EventName contains "Meeting"
+if Text.Contains([EventName], "Meeting", Comparer.OrdinalIgnoreCase)
+then Date.AddYears([EndDateTime], 2)
+else [EndDateTime]
+
+// 7) Difference between End and Start
+[EndDateTime] - [StartDateTime]   // duration
+```
+
+## Robust culture-safe typing (edit in Advanced Editor)
+
+```plaintext
+// Convert existing text columns to datetime in place, handling blanks
+Table.TransformColumns(
+    Source,
+    {
+      {"StartDateTime",
+        each let s = Text.Trim(Text.From(_)) in
+             if s=null or s="" then null
+             else try DateTime.FromText(s, "en-GB") otherwise null,
+        type nullable datetime},
+      {"EndDateTime",
+        each let s = Text.Trim(Text.From(_)) in
+             if s=null or s="" then null
+             else try DateTime.FromText(s, "en-GB") otherwise null,
+        type nullable datetime}
+    })
+```
+
+### Tips
+
+* **From vs FromText**: `…FromText` parses strings (use a culture); `…From` casts existing date/time values.
+    
+* **Culture matters** for dd-MM vs MM-dd inputs—pass `"en-GB"` or `"en-US"` explicitly.
+    
+* **Durations** are the result of subtracting dates/times; use `Duration.*` functions to get totals.
+    
+* Always **trim** incoming text before parsing: `Text.Trim([Column])`.
