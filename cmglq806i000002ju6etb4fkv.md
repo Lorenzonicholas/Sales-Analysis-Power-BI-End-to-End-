@@ -1245,4 +1245,165 @@ Source = Excel.Workbook(File.Contents(FilePathParameter), true, true)
 
 Use this 3-step pattern at the top of every query and most “mystery” data problems disappear before you even start analysis.
 
+## Power Query M — Lists
+
+### What is a List?
+
+* A **list** is an **ordered collection of values** (like an array).
+    
+* It’s **one-dimensional** and shows up as a single column in Power Query’s preview.
+    
+* Elements can be **any type**: number, text, logical, date/time, even **another list** (nested lists).
+    
+
+**Syntax:** use **curly braces** `{ }`
+
+* List: `{1, 2, 3}` / Text list: `{"hello", "world"}` / Mixed types: `{1, "hi", true, #date(2025,1,1)}`
+    
+
+> Remember the brackets:
+> 
+> * **{ }** → list
+>     
+> * **\[ \]** → record
+>     
+> * **#table(...)** or `Table.*` → table
+>     
+> * **( )** → function call / expression grouping
+>     
+
+---
+
+### 1) Create a List (Basic)
+
+```plaintext
+let
+    // Name your query: List Example
+    MyList = {1, 2, 3, 4},
+    // Add more elements by comma
+    MyListPlus = {1, 2, 3, 4, 5, "hi", true, #date(2025, 1, 1)}
+in
+    MyListPlus
+```
+
+**Tip:** You’ll see a “List” preview. Click the column header **To Table** to turn it into a table when needed.
+
+### 2) Access Elements (Indexing)
+
+* Lists are **0-based** indexed.
+    
+    * First element → index **0**
+        
+    * Second → **1**, etc.
+        
+
+```plaintext
+let
+    L = {10, 20, 30, 40, 50},
+    First   = L{0},   // 10
+    Third   = L{2},   // 30
+    Last    = L{List.Count(L) - 1} // 50 (safe way)
+in
+    Third
+```
+
+**Gotcha:** `L{999}` throws an error if the index is out of range. Use `List.Count` to stay safe.
+
+---
+
+### 3) Add / Combine Lists (Concatenation)
+
+Use `&` (ampersand) to concatenate lists.
+
+```plaintext
+let
+    Base      = {1, 2, 3, 4},
+    WithHead  = {0} & Base,           // 0,1,2,3,4
+    WithTail  = Base & {5, 6},        // 1,2,3,4,5,6
+    BothSides = {0} & Base & {7, 8, 9}
+in
+    BothSides
+```
+
+### 4) Common List Functions You’ll Use a Lot
+
+```plaintext
+let
+    L = {1, 2, 2, null, 3, 5},
+
+    Cnt        = List.Count(L),                 // 6
+    First      = List.First(L),                 // 1
+    Last       = List.Last(L),                  // 5
+    Sum        = List.Sum(List.RemoveNulls(L)), // 13
+    Distinct   = List.Distinct(L),              // {1,2,null,3,5}
+    Sorted     = List.Sort(L),                  // {null,1,2,2,3,5}
+    NoNulls    = List.RemoveNulls(L),           // {1,2,2,3,5}
+    Contains3  = List.Contains(L, 3),           // true
+    PosOf2     = List.PositionOf(L, 2),         // 1 (first occurrence)
+    OnlyEven   = List.Select(L, each _ <> null and Number.Mod(_,2)=0), // {2,2}
+    Doubled    = List.Transform(List.RemoveNulls(L), each _ * 2),      // {2,4,4,6,10}
+
+    // Combine many lists
+    Combined   = List.Combine( { {1,2}, {3}, {4,5} } ), // {1,2,3,4,5}
+
+    // Fold / reduce
+    Accumulated = List.Accumulate({1,2,3,4}, 0, (state, current) => state + current) // 10
+in
+    Combined
+```
+
+### 5) Generate Lists (Numbers, Dates, Times)
+
+```plaintext
+let
+    // Numbers: List.Numbers(start, count, optional step)
+    OneToFive  = List.Numbers(1, 5),                 // {1,2,3,4,5}
+    Odds       = List.Numbers(1, 5, 2),              // {1,3,5,7,9}
+
+    // Dates: List.Dates(startDate, count, step as duration)
+    WeekDates  = List.Dates(#date(2025,1,1), 7, #duration(1,0,0,0)),
+
+    // Times: List.Times(startTime, count, step as duration)
+    Hourly     = List.Times(#time(0,0,0), 5, #duration(0,1,0,0)), // every hour
+in
+    WeekDates
+```
+
+### 6) Nested Lists (Lists Inside Lists)
+
+A nested list is just a list whose elements are lists.
+
+```plaintext
+let
+    Nested = {
+        {1, 2, 3},     // index 0
+        {"a", "b"},    // index 1
+        {true, false}  // index 2
+    },
+
+    // Access the 2nd sub-list (index 1)
+    Sub2 = Nested{1},          // -> {"a","b"}
+
+    // Access element "b" inside the 2nd sub-list
+    Element_b = Nested{1}{1}   // "b"
+in
+    Element_b
+```
+
+**Pattern:** `Nested{subListIndex}{elementIndex}`
+
+---
+
+### 7) Convert Between List and Table
+
+**List → Table**
+
+```plaintext
+let
+    L       = {1, 2, 3, null, 5},
+    AsTable = Table.FromList(L, Splitter.SplitByNothing(), {"Value"})
+in
+    AsTable
+```
+
 *
