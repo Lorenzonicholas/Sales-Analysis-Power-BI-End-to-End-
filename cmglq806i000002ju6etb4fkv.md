@@ -1113,3 +1113,136 @@ Table.TransformColumns(
 * **Durations** are the result of subtracting dates/times; use `Duration.*` functions to get totals.
     
 * Always **trim** incoming text before parsing: `Text.Trim([Column])`.
+    
+
+## Power Query: load → navigate → type your data (before any analysis)
+
+When you pull data into Power Query, the first three things you should always do are:
+
+1. **Load** the file
+    
+2. **Navigate** to the object you want (sheet/table/range)
+    
+3. **Fix the column types** (with the right *culture/locale*)
+    
+
+Here’s a compact pattern that does exactly that for an Excel sheet:
+
+```plaintext
+let
+    // 1) LOAD: read the Excel file (as Binary) and tell PQ how to treat the first row
+    Source  = Excel.Workbook(
+                File.Contents("C:\DATA science\Cousera Certifications\Power BI\Complete M Language from Scratch in Power Query for Power BI\Datasets\08. Datetime Function Assignment Dataset.xlsx"),
+                true,   // useHeaders: true = use first row as column names; false/null = don't
+                true),  // delayTypes: true = postpone automatic type detection (usually safer)
+
+    // 2) NAVIGATE: pick the object inside the workbook
+    Sheet1  = Source{[Item="Sheet1", Kind="Sheet"]}[Data],
+
+    // 3) TYPES: set the correct types, using a culture for date parsing
+    ChangedTypes = Table.TransformColumnTypes(
+        Sheet1,
+        {{"TaskName", type text}, {"StartDate", type date}, {"Deadline", type date}},
+        "en-GB"   // dd-MM-yyyy style; use "en-US" for MM/dd/yyyy, etc.
+    )
+in
+    ChangedTypes
+```
+
+---
+
+## What each line really does
+
+### 1) `Excel.Workbook(File.Contents(...), useHeaders, delayTypes)`
+
+* `File.Contents(path)` returns the **Binary** file stream. It isn’t a “path string” anymore; it’s the actual file bytes.
+    
+* `useHeaders`
+    
+    * `true` → treat the first row of each sheet/table as headers.
+        
+    * `false`/`null` → do **not** auto-promote (you can later do `Table.PromoteHeaders` when you want).
+        
+* `delayTypes`
+    
+    * `true` → **don’t** auto-detect column types now (avoids early, culture-dependent mistakes).
+        
+    * `false` → try to auto-detect (often causes US-date assumptions).
+        
+
+> Tip: For robust pipelines, `useHeaders=true` and `delayTypes=true` is a great default.
+
+### 2) `Source{[Item="Sheet1", Kind="Sheet"]}[Data]`
+
+* The `Source` table lists all workbook objects (Sheets, Tables, DefinedNames).
+    
+* The **record selector** `{[Item="Sheet1", Kind="Sheet"]}` finds the exact row by keys.
+    
+    * Change `Kind` to **"Table"** if you want an Excel **table** (`ListObjects`) instead of a sheet.
+        
+* `[Data]` takes the actual table value from that row.
+    
+
+> If you get **“The key didn’t match any rows”**, the name or kind is wrong. Click the **Data** cell in the Navigator output to see the exact `Item`/`Kind` names.
+
+### 3) `Table.TransformColumnTypes(table, typePairs, culture)`
+
+* `typePairs` is a list of `{columnName, type}` pairs.
+    
+* The optional `culture` string tells Power Query **how to parse** text into dates/numbers.
+    
+    * `"en-GB"` → `dd-MM-yyyy`
+        
+    * `"en-US"` → `MM/dd/yyyy`
+        
+    * Use it **whenever** your source dates are text and not US style.
+        
+
+> Symptoms of wrong culture: red error cells or swapped month/day. Fix by passing the correct culture here (or use **Transform ▸ Data type ▸ Using Locale** in the UI which generates the same code).
+
+---
+
+## Useful variations
+
+**Pick an Excel Table instead of a Sheet**
+
+```plaintext
+Tbl = Source{[Item="Tasks", Kind="Table"]}[Data]
+```
+
+**Promote headers yourself (when useHeaders=null)**
+
+```plaintext
+Promoted = Table.PromoteHeaders(Sheet1, [PromoteAllScalars=true])
+```
+
+**Set multiple types including datetime**
+
+```plaintext
+Typed = Table.TransformColumnTypes(
+    Promoted,
+    {{"When", type datetime}, {"Amount", type number}, {"Who", type text}},
+    "en-GB"
+)
+```
+
+**Parameterize the file path**
+
+```plaintext
+Source = Excel.Workbook(File.Contents(FilePathParameter), true, true)
+```
+
+---
+
+## Why this prep matters
+
+* **Reliable parsing** (no silent US-date misreads).
+    
+* **Predictable schema** (typed columns travel cleanly into the model).
+    
+* **Maintainability** (explicit navigation and typing survive refreshes and file changes).
+    
+
+Use this 3-step pattern at the top of every query and most “mystery” data problems disappear before you even start analysis.
+
+*
