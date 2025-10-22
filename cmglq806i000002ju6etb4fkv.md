@@ -1406,4 +1406,433 @@ in
     AsTable
 ```
 
-*
+# Power Query M — List Functions
+
+Want to get fast and confident with lists in Power Query? This note walks you through the **must-know list functions** you’ll use all the time for analysis and transformations. We’ll use a simple table with columns like `Name`, `Age`, `Salary`, and `Department` to ground the examples.
+
+---
+
+## Why lists matter in M
+
+* A **List** is a 1-D sequence (like a single column).
+    
+* Many operations are easier or faster when you pull a column out as a list, transform it, then use or summarize it.
+    
+* Lists are **0-based indexed** (first item is index `0`).
+    
+
+> Tip: In the formula bar, any **step name** is a variable. The last step is returned by `in` in Advanced Editor—either way is fine.
+
+---
+
+## 1) `Table.Column` — extract a column as a list
+
+**What it does:** Turns a single column from a table into a list (duplicates preserved).
+
+**Syntax**
+
+```plaintext
+Table.Column(table as table, column as text) as list
+```
+
+**Example**
+
+```plaintext
+// From previous step #"Changed Type"
+Names = Table.Column(#"Changed Type", "Name")
+// → {"Alice","Bob","Charlie","Olivia", ...}
+```
+
+**Alternate shorthand (field access):**
+
+```plaintext
+Names2 = #"Changed Type"[Name]   // same result
+```
+
+**Common gotchas**
+
+* Column name must be **text** (in quotes).
+    
+* A list is single-column—if you need 2 columns, you can’t make “a 2-column list”; use a **table** or **list of records**.
+    
+
+---
+
+## 2) `List.Distinct` — unique values
+
+**What it does:** Removes duplicates from a list.
+
+**Syntax**
+
+```plaintext
+List.Distinct(list as list, optional equationCriteria as any) as list
+```
+
+**Example**
+
+```plaintext
+Depts       = Table.Column(#"Changed Type", "Department");
+UniqueDepts = List.Distinct(Depts)
+// → {"HR","Finance","IT","Sales","Operations"}
+```
+
+---
+
+## 3) `List.Transform` — apply a function to each item
+
+**What it does:** Maps each element through a transformation and returns a new list.
+
+**Syntax**
+
+```plaintext
+List.Transform(list as list, transform as function) as list
+```
+
+**Examples**
+
+```plaintext
+Salaries       = Table.Column(#"Changed Type","Salary");
+DoubleSalaries = List.Transform(Salaries, each _ * 2)
+
+Labels =
+    List.Transform(
+        Salaries,
+        each if _ > 8000
+             then Number.ToText(_) & " - High Salary"
+             else Number.ToText(_) & " - Low Salary"
+    )
+```
+
+**Notes**
+
+* `each` means “for each element”; `_` is the current item.
+    
+* Use `Number.ToText`, `Text.From`, etc., to **avoid type mix errors** when concatenating.
+    
+
+---
+
+## 4) `List.Sort` — order a list
+
+**What it does:** Sorts ascending by default; use `Order.Descending` for desc.
+
+**Syntax**
+
+```plaintext
+List.Sort(list as list, optional comparisonCriteria as any) as list
+```
+
+**Examples**
+
+```plaintext
+Asc  = List.Sort(Salaries) // ascending by default
+Desc = List.Sort(Salaries, Order.Descending)
+```
+
+---
+
+## 5) [`List.Select`](http://List.Select) — filter by a condition
+
+**What it does:** Keeps elements that satisfy a predicate (returns a list).
+
+**Syntax**
+
+```plaintext
+List.Select(list as list, selection as function) as list
+```
+
+**Examples**
+
+```plaintext
+HighPay = List.Select(Salaries, each _ > 8000)
+
+NamesABC =
+let
+    AllNames = Table.Column(#"Changed Type","Name")
+in
+    List.Select(
+        AllNames,
+        each Text.StartsWith(_, "A")
+          or Text.StartsWith(_, "B")
+          or Text.StartsWith(_, "C")
+    )
+```
+
+**Common mistakes to avoid**
+
+* ✅ `Text.StartsWith(_, "A")` **already returns true/false**.  
+    ❌ Don’t compare it to `"A"` or `= "A"`.
+    
+* If you prefer first-character logic: `Text.Start(_, 1) = "A"` (function name is `Text.Start`, not `textStart`).
+    
+
+---
+
+## 6) `List.RemoveItems` — subtract elements
+
+**What it does:** Removes **all occurrences** of items in a “block list” from your base list.
+
+**Syntax**
+
+```plaintext
+List.RemoveItems(list as list, values as list) as list
+```
+
+**Example**
+
+```plaintext
+AllNames     = Table.Column(#"Changed Type","Name");
+ToRemove     = {"Alice","Bob","Charlie"};
+Remaining    = List.RemoveItems(AllNames, ToRemove)
+```
+
+---
+
+## 7) `List.Sum` — add up numbers
+
+**What it does:** Sums all numeric elements (non-numbers are ignored).
+
+**Syntax**
+
+```plaintext
+List.Sum(list as list) as any
+```
+
+**Examples**
+
+```plaintext
+TotalSalary = List.Sum(Salaries)
+
+SumHighOnly =
+let
+    High = List.Select(Salaries, each _ > 8000)
+in
+    List.Sum(High)
+```
+
+---
+
+## 8) `List.Count` — how many items?
+
+**What it does:** Counts elements (numbers, text, logical, null—all count).
+
+**Syntax**
+
+```plaintext
+List.Count(list as list) as number
+```
+
+**Examples**
+
+```plaintext
+CountAll        = List.Count(Salaries)
+CountUniqueDept = List.Count(List.Distinct(Table.Column(#"Changed Type","Department")))
+```
+
+---
+
+## 9) `List.Combine` — flatten lists of lists
+
+(You might see this mis-called “confine” — the correct function is **Combine**.)
+
+**What it does:** Concatenates multiple lists into one list.
+
+**Syntax**
+
+```plaintext
+List.Combine(lists as list) as list   // the argument itself is a list of lists
+```
+
+**Example**
+
+```plaintext
+A = {1,2,3};
+B = {4,5};
+C = {"x","y"};
+
+Flat = List.Combine({A, B, C})
+// → {1,2,3,4,5,"x","y"}
+```
+
+---
+
+## 10) `List.Contains` — membership test
+
+**What it does:** Returns `true`/`false` if a value exists in the list.
+
+**Syntax**
+
+```plaintext
+List.Contains(list as list, value as any, optional equationCriteria as any) as logical
+```
+
+**Examples**
+
+```plaintext
+UniqueDepts = List.Distinct(Table.Column(#"Changed Type","Department"));
+HasHR = List.Contains(UniqueDepts, "HR")        // true/false
+HasIT = List.Contains(UniqueDepts, "IT")
+
+Result =
+if HasHR and HasIT
+then "HR and IT departments are present in the dataset"
+else "HR and IT departments are not both present"
+```
+
+---
+
+## 11) `List.FirstN` and `List.LastN` — take from start/end
+
+**What they do:** Return the first/last *n* elements.
+
+**Syntax**
+
+```plaintext
+List.FirstN(list as list, count as any) as list
+List.LastN(list as list, count as any) as list
+```
+
+**Examples**
+
+```plaintext
+// Lowest 5 ages
+Ages      = Table.Column(#"Changed Type","Age");
+AgesAsc   = List.Sort(Ages);
+Lowest5   = List.FirstN(AgesAsc, 5)
+
+// Highest 5 ages (without reversing)
+Highest5  = List.LastN(AgesAsc, 5)
+```
+
+---
+
+## 12) `List.Min` and `List.Max` — single smallest/largest
+
+**What they do:** Return a **single** value (min/max). Internally they effectively consider sorted order.
+
+**Syntax**
+
+```plaintext
+List.Min(list as list) as any
+List.Max(list as list) as any
+```
+
+**Examples**
+
+```plaintext
+MinSalary = List.Min(Salaries)  // 1 value
+MaxSalary = List.Max(Salaries)
+```
+
+**Heterogeneous lists & nulls**
+
+* If the first sorted element is `null`, `List.Min` **skips null** and returns the next value.
+    
+* Empty list → returns `null`.
+    
+
+---
+
+## 13) Access list items by index `{}` and split text to list
+
+**Indexing**
+
+```plaintext
+item0 = Names{0}     // first item
+last  = Names{List.Count(Names)-1}
+```
+
+**Split text into a list**
+
+```plaintext
+parts = Text.Split("Hello-M is a-functional-language", "-")
+// → {"Hello","M is a","functional","language"}
+
+// Pick the 5th token (index 4)
+fifth = parts{4}
+```
+
+---
+
+## Practical patterns you’ll reuse
+
+### Keep ABC-initial names from a table
+
+```plaintext
+let
+    Names = Table.Column(#"Changed Type", "Name"),
+    Keep  = List.Select(
+              Names,
+              each Text.StartsWith(_, "A")
+                or Text.StartsWith(_, "B")
+                or Text.StartsWith(_, "C")
+           )
+in
+    Keep
+```
+
+### Sum of salaries &gt; 8,000
+
+```plaintext
+let
+    Salaries = Table.Column(#"Changed Type","Salary"),
+    High     = List.Select(Salaries, each _ > 8000),
+    Total    = List.Sum(High)
+in
+    Total
+```
+
+### Unique department count
+
+```plaintext
+let
+    Depts   = Table.Column(#"Changed Type","Department"),
+    Unique  = List.Distinct(Depts),
+    Count   = List.Count(Unique)
+in
+    Count
+```
+
+---
+
+## Troubleshooting & gotchas (read this!)
+
+* **Case sensitivity:** M is case-sensitive. `Text.Start` ≠ `textStart`.
+    
+* **Booleans vs text:** `Text.StartsWith(_, "A")` already returns **logical**. Don’t compare to `"A"`.
+    
+* **Type mixing:** Concatenating numbers and text? Wrap numbers with `Number.ToText` (or `Text.From`).
+    
+* **0-based indices:** `list{0}` is the first item.
+    
+* **Single column only:** A list is 1-D. If you need multiple fields, keep a **table**, or use a **list of records**.
+    
+
+---
+
+## Quick cheat sheet
+
+| Goal | Function |
+| --- | --- |
+| Extract column → list | `Table.Column(tbl,"Col")` or `tbl[Col]` |
+| Unique values | `List.Distinct(list)` |
+| Map/transform | `List.Transform(list, each …)` |
+| Sort | `List.Sort(list, Order.Descending)` |
+| Filter | [`List.Select`](http://List.Select)`(list, each condition)` |
+| Remove items | `List.RemoveItems(list, {a,b,c})` |
+| Sum | `List.Sum(list)` |
+| Count | `List.Count(list)` |
+| Combine lists | `List.Combine({list1, list2, …})` |
+| Contains? | `List.Contains(list, value)` |
+| First/Last N | `List.FirstN(list, n)` / `List.LastN(list, n)` |
+| Min/Max | `List.Min(list)` / `List.Max(list)` |
+| Split text | `Text.Split(text, delimiter)` |
+| Index into list | `list{index}` |
+
+---
+
+## Performance tips
+
+* Prefer **list ops** for simple scans; they’re fast and expressive.
+    
+* When you’ll re-use a list multiple times, bind it to a **let variable** once.
