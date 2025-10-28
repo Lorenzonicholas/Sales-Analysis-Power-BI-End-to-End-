@@ -25,7 +25,7 @@ Power Query is Power BI’s **data preparation** layer. It lets you **connect**,
 
 ### What is the M language?
 
-**M** (for *Mashup*) is the scripting language behind Power Query. Every click you do in the UI is recorded as **M steps** in a `let … in` pipeline. You can read or edit this code in **Advanced Editor** to automate and customize transformations.
+**M** (for *Mashup*) is the scripting language behind Power Query. Every click you do in the UI is recorded as **M steps** in a `let … in` pipeline. You can read or edit this code in **Advanced Editor** to automate and customise transformations.
 
 **Key traits**
 
@@ -112,7 +112,7 @@ Power Query records every action as a step (top-right panel):
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1760156039813/e25e0a45-6c32-440f-8ba9-84ff362cd616.png align="center")
 
-## M Language Basics — Variables & Comments (Quick Study Note)
+## M Language Basics — Variables & Comments
 
 ### Where to write M
 
