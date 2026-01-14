@@ -84,15 +84,274 @@ You can:
 * **Home → Advanced Editor** shows the **entire query** (`let … in`) so you can edit or paste code.
     
 
+## 🧠 Core Idea of Power Query
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1768361855305/05a9a879-9490-4283-b359-3f78bcee72bc.png align="center")
+
+```plaintext
+1. Get the file
+-> Line 1 
+2. Tell Power Query what type of file it is
+-> Line 2
+3. Extract data from inside
+-> Line 2
+4. Transform the data
+-> Line 3
+-> Line 4
+```
+
 ### Understand “Applied Steps”
 
 Power Query records every action as a step (top-right panel):
+
+## 🧩 Source
 
 **Source** – connection details (provider + file/path).
 
 `= Excel.Workbook(File.Contents("C:\DATA science\Cousera Certifications\Power BI\Complete M Language from Scratch in Power Query for Power BI\Datasets\01. Sample Dataset 01.xlsx"), null, true)`
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1760155622548/54cc4a43-b5db-4d8c-8eb2-f85d4be67da2.png align="center")
+
+```plaintext
+Source = Excel.Workbook(
+    File.Contents("C:\...\posttopre investigation.xlsx"),
+    null,
+    true
+),
+```
+
+---
+
+### 1️⃣ Getting the file
+
+```plaintext
+File.Contents("C:\...\file.xlsx")
+```
+
+* Reads the file from disk
+    
+* Loads it as **binary**
+    
+* Power Query does NOT care yet if it’s Excel, CSV, JSON, etc.
+    
+
+📌 **Binary = raw file bytes**
+
+---
+
+### 2️⃣ Understanding the file format
+
+```plaintext
+Excel.Workbook(binary)
+```
+
+* Tells Power Query:
+    
+    > “This binary file is an **Excel workbook**”
+    
+* Converts the file into a **structured list of contents**
+    
+    * Sheets
+        
+    * Tables
+        
+    * Named ranges
+        
+
+📌 This is why **Excel.Workbook exists**  
+Excel files are complex → Power Query needs a special parser.
+
+---
+
+## 🔍Other formats
+
+| File Type | Function | Reason |
+| --- | --- | --- |
+| Excel | `Excel.Workbook` | Sheets, tables, names |
+| CSV | `Csv.Document` | Structured text |
+| Text | `Lines.FromBinary` | Raw lines |
+| JSON | `Json.Document` | Nested objects |
+| XML | `Xml.Document` | Tree structure |
+| Parquet | `Parquet.Document` | Columnar big data |
+
+📌 **Different formats → different parsers**
+
+But **ALL start with** `File.Contents`.
+
+---
+
+## 🔑 Why it is NOT just `Excel(...)`
+
+**Excel.Workbook(binary)**
+
+* `Excel` is a **namespace (library)**
+    
+* `Workbook` is a **function inside it**
+    
+* Power Query uses:
+    
+    ```plaintext
+    Library.Function
+    ```
+    
+
+Same idea as:
+
+```plaintext
+dbo.TableName
+```
+
+You cannot remove `Workbook`.
+
+---
+
+## 📊 What comes OUT of the first line
+
+After this step:
+
+```plaintext
+Source = Excel.Workbook(...)
+```
+
+`Source` becomes a **table describing the Excel file**, not the data itself.
+
+Example mental model:
+
+| Item(Sheet name or table name) | Kind | Data |
+| --- | --- | --- |
+| Sheet1 | Sheet | \[Table\] |
+| Final 3 | Sheet | \[Table\] |
+| Table1 | Table | \[Table\] |
+
+That’s why the **second line** can select:
+
+```plaintext
+Source{[Item="Final 3", Kind="Sheet"]}[Data]
+```
+
+---
+
+## Action 1 — Row selection
+
+```plaintext
+Source{[Item="Final 3", Kind="Sheet"]}
+```
+
+This means:
+
+> “From the `Source` table, find the row where  
+> `Item = "Final 3"` AND `Kind = "Sheet"`”
+
+Result of this step = **a RECORD**, not a table.
+
+That record looks like:
+
+```plaintext
+[
+  Item = "Final 3",
+  Kind = "Sheet",
+  Data = [Table]
+]
+```
+
+📌 Important: `{ }` returns **a single row as a RECORD**
+
+---
+
+## Action 2 — Extracting `[Data]`
+
+```plaintext
+[Data]
+```
+
+This means:
+
+> “From that record, give me the value stored in the `Data` field”
+
+## Why `[Data]` is REQUIRED
+
+If you stop here:
+
+```plaintext
+Source{[Item="Final 3", Kind="Sheet"]}
+```
+
+You still have:
+
+* Metadata
+    
+* Not the sheet contents
+    
+
+You must explicitly say:
+
+```plaintext
+[Data]
+```
+
+to unwrap the nested table.
+
+## 🌍 Connection to Big Data (important insight)
+
+What you learned here scales directly to big data:
+
+```plaintext
+File / API / Storage
+   ↓
+Binary
+   ↓
+Parser (Excel / CSV / JSON / Parquet)
+   ↓
+Structured Table
+```
+
+* Excel → small data
+    
+* CSV → interchange
+    
+* JSON → ingestion
+    
+* Parquet → analytics at scale
+    
+
+📌 Same idea, different size.
+
+---
+
+## 🧠 One Golden Rule (write this down)
+
+> **Power Query never guesses formats.  
+> You must tell it what the file is.**
+
+That’s why this line exists.
+
+---
+
+## ✅ Why learning ONLY this line first is smart
+
+Because:
+
+* Every query starts here
+    
+* Every error later traces back here
+    
+* Once this clicks, everything else becomes logical
+    
+
+You’re learning **from the root**, not the leaves.
+
+---
+
+If you want, next we can:
+
+* Turn this into a **personal Power Query notebook**
+    
+* Explain the **second line** with the same depth
+    
+* Build a **mental map from Excel → Fabric → Big Data**
+    
+
+You’re doing this the **right way** 👌
 
 **Navigation** – which sheet/table you selected.
 
